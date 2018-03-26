@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ExploreDC_Android.iml" filepath="$PROJECT_DIR$/ExploreDC_Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/sdk-simplepanowidget/samples-sdk-simplepanowidget.iml" filepath="$PROJECT_DIR$/samples/sdk-simplepanowidget/samples-sdk-simplepanowidget.iml" />
     </modules>
   </component>
 </project>
