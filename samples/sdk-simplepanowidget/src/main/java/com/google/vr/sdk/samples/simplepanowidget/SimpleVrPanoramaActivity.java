@@ -113,12 +113,12 @@ public class SimpleVrPanoramaActivity extends Activity {
         Log.i(TAG, "Using file " + fileUri.toString());
       }
 
-      panoOptions.inputType = intent.getIntExtra("inputType", Options.TYPE_STEREO_OVER_UNDER); //SRO - originally TYPE_MONO
+      panoOptions.inputType = intent.getIntExtra("inputType", Options.TYPE_MONO);
       Log.i(TAG, "Options.inputType = " + panoOptions.inputType);
     } else {
       Log.i(TAG, "Intent is not ACTION_VIEW. Using default pano image.");
       fileUri = null;
-      panoOptions.inputType = Options.TYPE_STEREO_OVER_UNDER;  //SRO - original code as follows: "panoOptions.inputType = Options.TYPE_MONO;"
+      panoOptions.inputType = Options.TYPE_MONO;
     }
 
     // Load the bitmap in a background thread to avoid blocking the UI thread. This operation can

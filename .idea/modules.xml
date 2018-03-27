@@ -3,7 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ExploreDC_Android.iml" filepath="$PROJECT_DIR$/ExploreDC_Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/sdk-controllerclient/samples-sdk-controllerclient.iml" filepath="$PROJECT_DIR$/samples/sdk-controllerclient/samples-sdk-controllerclient.iml" />
       <module fileurl="file://$PROJECT_DIR$/samples/sdk-simplepanowidget/samples-sdk-simplepanowidget.iml" filepath="$PROJECT_DIR$/samples/sdk-simplepanowidget/samples-sdk-simplepanowidget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/sdk-simplevideowidget/samples-sdk-simplevideowidget.iml" filepath="$PROJECT_DIR$/samples/sdk-simplevideowidget/samples-sdk-simplevideowidget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/sdk-treasurehunt/samples-sdk-treasurehunt.iml" filepath="$PROJECT_DIR$/samples/sdk-treasurehunt/samples-sdk-treasurehunt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/sdk-video360/samples-sdk-video360.iml" filepath="$PROJECT_DIR$/samples/sdk-video360/samples-sdk-video360.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/sdk-videoplayer/samples-sdk-videoplayer.iml" filepath="$PROJECT_DIR$/samples/sdk-videoplayer/samples-sdk-videoplayer.iml" />
     </modules>
   </component>
 </project>
