@@ -30,7 +30,7 @@ model {
         buildTypes {
             release {
                 minifyEnabled true
-                proguardFiles.add(file('../../proguard-gvr.txt'))
+                proguardFiles.add(file('proguard-gvr.txt'))
             }
         }
     }

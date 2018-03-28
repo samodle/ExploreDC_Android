@@ -19,13 +19,14 @@
           android:textColor="@color/textDark"
           android:text="@string/title" />
 
+        <!--
         <TextView
           style="@style/ContentText"
           android:id="@+id/subtitle"
           android:textColor="@color/textLight"
           android:textSize="@dimen/caption_text_size"
           android:text="@string/subtitle" />
-
+-->
         <TextView
           style="@style/ContentText"
           android:id="@+id/paragraph1"

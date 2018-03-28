@@ -13,9 +13,10 @@
       handle multiple panoramas might run out of memory in the default
       configuration.
     -->
-    <application android:label="SimpleVrPanoramaActivity"
+    <application android:label="ExploreDC"
       android:largeHeap="true"
-      android:theme="@android:style/Theme.Holo.Light">
+        android:icon="@mipmap/ic_launcher"
+      android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
         <!-- This demo is singleTask since it makes launching via custom adb intents easier. -->
         <activity android:name=".SimpleVrPanoramaActivity"
           android:launchMode="singleTask">

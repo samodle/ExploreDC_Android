@@ -183,7 +183,7 @@ public class SimpleVrPanoramaActivity extends Activity {
           || fileInformation[0] == null || fileInformation[0].first == null) {
         AssetManager assetManager = getAssets();
         try {
-          istr = assetManager.open("andes.jpg");
+          istr = assetManager.open("pano_scusD00.png");
           panoOptions = new Options();
           panoOptions.inputType = Options.TYPE_MONO;
         } catch (IOException e) {

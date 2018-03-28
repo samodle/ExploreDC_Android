@@ -2,7 +2,7 @@
 // building them.
 
 // Explicitly load all the SDK samples using their full path.
-include ':samples:sdk-simplepanowidget'
+include ':ExploreDCModule'
 
 // Android Studio doesn't preserve nested modules in its Project View. To create
 // a cleaner layout, we reorganize and rename the modules loaded above.
@@ -10,16 +10,16 @@ Set moduleList = new HashSet()  // Modules to display in the Project View.
 
 // Move all the modules from root/samples/simplepanowidget to
 // root/samples-simplepanowidget.
-rootProject.children.each { outerDir ->
+/*rootProject.children.each { outerDir ->
     outerDir.children.each { innerDir ->
         // Rename the modules as we move them around.
         innerDir.name = "$outerDir.name-$innerDir.name"
     }
     moduleList.addAll(outerDir.children)
-}
+}*/
 
 // Remove the top-level modules which are empty and useless.
-rootProject.children.clear()
+//rootProject.children.clear()
 
 // Add the subdirectories as top-level modules.
-rootProject.children.addAll(moduleList)
+//rootProject.children.addAll(moduleList)
