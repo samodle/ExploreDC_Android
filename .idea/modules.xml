@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/samples/sdk-simplepanowidget/ExploreDCModule.iml" filepath="$PROJECT_DIR$/.idea/modules/samples/sdk-simplepanowidget/ExploreDCModule.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExploreDC_Android.iml" filepath="$PROJECT_DIR$/ExploreDC_Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/samples/sdk-simplepanowidget/samples-sdk-simplepanowidget.iml" filepath="$PROJECT_DIR$/samples/sdk-simplepanowidget/samples-sdk-simplepanowidget.iml" />
     </modules>
   </component>
 </project>

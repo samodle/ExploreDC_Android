@@ -3,10 +3,11 @@
 <resources>
   <string name="title">Welcome To The \nDistrict of Columbia!</string>
   <string name="subtitle">The world-famous citadel of the Andes</string>
-  <string name="paragraph1">Machu Picchu is an Incan citadel set high in the Andes Mountains in
-    Peru, above the Urubamba River valley.</string>
+  <string name="paragraph1">Click "Explore" to randomly cycle through all our content or browse by category below.</string>
 
-  <string name="image_caption">A 360 panoramic view of the Supreme Court</string>
+    <string name="button_explore">Explore!</string>
+
+  <string name="image_caption">A 360 panoramic view outside the Supreme Court</string>
 
     <string name="image_caption2">A 360 view inside the Lincoln Memorial</string>
 

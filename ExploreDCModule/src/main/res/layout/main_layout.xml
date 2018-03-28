@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dip"
         android:id="@+id/main_layout"
         android:orientation="vertical" >
@@ -34,6 +34,24 @@
           android:textSize="@dimen/paragragh_text_size"
           android:text="@string/paragraph1" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+             <Button
+            android:id="@+id/button"
+            android:layout_width="159dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_explore" />
+
+            <NumberPicker
+                android:id="@+id/np"
+                android:descendantFocusability="blocksDescendants"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            </LinearLayout>
+
         <com.google.vr.sdk.widgets.pano.VrPanoramaView
             android:id="@+id/pano_view"
             android:layout_margin="5dip"
@@ -45,7 +63,7 @@
           style="@style/ContentText"
           android:id="@+id/pano_view_caption"
           android:textColor="@color/textLight"
-          android:textSize="12dip"
+          android:textSize="12sp"
           android:text="@string/image_caption" />
 
         <com.google.vr.sdk.widgets.pano.VrPanoramaView
@@ -59,8 +77,8 @@
             style="@style/ContentText"
             android:id="@+id/pano_view_caption2"
             android:textColor="@color/textLight"
-            android:textSize="12dip"
-            android:text="@string/image_caption" />
+            android:textSize="12sp"
+            android:text="@string/image_caption2" />
 
         <TextView
           style="@style/ContentText"

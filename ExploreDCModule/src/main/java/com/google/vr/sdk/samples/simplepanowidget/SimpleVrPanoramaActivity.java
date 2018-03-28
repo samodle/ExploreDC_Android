@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import android.widget.NumberPicker;
 
 /**
  * A basic PanoWidget Activity to load panorama images from disk. It will load a test image by
@@ -65,6 +66,7 @@ public class SimpleVrPanoramaActivity extends Activity {
   private Options panoOptions2 = new Options();
   private ImageLoaderTask backgroundImageLoaderTask;
 
+  private int SecondsPerPano = 3;
   /**
    * Called when the app is launched via the app icon or an intent using the adb command above. This
    * initializes the app and loads the image to render.
@@ -84,6 +86,26 @@ public class SimpleVrPanoramaActivity extends Activity {
 
     panoWidgetView2 = (VrPanoramaView) findViewById(R.id.pano_view2);
     panoWidgetView2.setEventListener(new ActivityEventListener());
+
+    //setup the number picker for number of seconds to display each image
+      NumberPicker np = (NumberPicker) findViewById(R.id.np);
+
+      //Populate NumberPicker values from minimum and maximum value range
+      //Set the minimum value of NumberPicker
+      np.setMinValue(2);
+      //Specify the maximum value/number of NumberPicker
+      np.setMaxValue(10);
+
+      //Set a value change listener for NumberPicker
+      np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+          @Override
+          public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+              SecondsPerPano = newVal;
+          }
+      });
+
+      //Gets whether the selector wheel wraps when reaching the min/max value.
+      np.setWrapSelectorWheel(true);
 
     // Initial launch of the app or an Activity recreation due to rotation.
     handleIntent(getIntent());
