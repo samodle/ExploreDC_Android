@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import android.widget.NumberPicker;
 
+import org.w3c.dom.Text;
+
 /**
  * A basic PanoWidget Activity to load panorama images from disk. It will load a test image by
  * default. It can also load an arbitrary image from disk using:
@@ -66,6 +68,7 @@ public class SimpleVrPanoramaActivity extends Activity {
   private Options panoOptions2 = new Options();
   private ImageLoaderTask backgroundImageLoaderTask;
 
+  private TextView p1;
   private int SecondsPerPano = 3;
   /**
    * Called when the app is launched via the app icon or an intent using the adb command above. This
@@ -86,6 +89,10 @@ public class SimpleVrPanoramaActivity extends Activity {
 
     panoWidgetView2 = (VrPanoramaView) findViewById(R.id.pano_view2);
     panoWidgetView2.setEventListener(new ActivityEventListener());
+
+    //can we get sum html up in herr?
+      p1 = (TextView) findViewById(R.id.paragraph1);
+      p1.setText(getText(R.string.paragraph1));
 
     //setup the number picker for number of seconds to display each image
       NumberPicker np = (NumberPicker) findViewById(R.id.np);

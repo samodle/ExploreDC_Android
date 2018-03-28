@@ -3,7 +3,7 @@
 <resources>
   <string name="title">Welcome To The \nDistrict of Columbia!</string>
   <string name="subtitle">The world-famous citadel of the Andes</string>
-  <string name="paragraph1">Click "Explore" to randomly cycle through all our content or browse by category below.</string>
+  <string name="paragraph1">Click <b><i>Explore</i></b> to randomly cycle through all our content or browse by category below.</string>
 
     <string name="button_explore">Explore!</string>
 
