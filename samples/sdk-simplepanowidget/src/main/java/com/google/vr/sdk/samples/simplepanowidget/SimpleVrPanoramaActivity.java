@@ -51,6 +51,7 @@ public class SimpleVrPanoramaActivity extends Activity {
   private static final String TAG = SimpleVrPanoramaActivity.class.getSimpleName();
   /** Actual panorama widget. **/
   private VrPanoramaView panoWidgetView;
+  private VrPanoramaView panoWidgetView2;
   /**
    * Arbitrary variable to track load status. In this example, this variable should only be accessed
    * on the UI thread. In a real app, this variable would be code that performs some UI actions when
@@ -61,6 +62,7 @@ public class SimpleVrPanoramaActivity extends Activity {
   private Uri fileUri;
   /** Configuration information for the panorama. **/
   private Options panoOptions = new Options();
+  private Options panoOptions2 = new Options();
   private ImageLoaderTask backgroundImageLoaderTask;
 
   /**
@@ -79,6 +81,9 @@ public class SimpleVrPanoramaActivity extends Activity {
 
     panoWidgetView = (VrPanoramaView) findViewById(R.id.pano_view);
     panoWidgetView.setEventListener(new ActivityEventListener());
+
+    panoWidgetView2 = (VrPanoramaView) findViewById(R.id.pano_view2);
+    panoWidgetView2.setEventListener(new ActivityEventListener());
 
     // Initial launch of the app or an Activity recreation due to rotation.
     handleIntent(getIntent());
@@ -168,13 +173,19 @@ public class SimpleVrPanoramaActivity extends Activity {
     protected Boolean doInBackground(Pair<Uri, Options>... fileInformation) {
       Options panoOptions = null;  // It's safe to use null VrPanoramaView.Options.
       InputStream istr = null;
+
+      //attempt to populate secoind vr view
+      Options panoOptions2 = null;  // It's safe to use null VrPanoramaView.Options.
+      InputStream istr2 = null;
+
+      //original ish
       if (fileInformation == null || fileInformation.length < 1
           || fileInformation[0] == null || fileInformation[0].first == null) {
         AssetManager assetManager = getAssets();
         try {
           istr = assetManager.open("andes.jpg");
           panoOptions = new Options();
-          panoOptions.inputType = Options.TYPE_STEREO_OVER_UNDER;
+          panoOptions.inputType = Options.TYPE_MONO;
         } catch (IOException e) {
           Log.e(TAG, "Could not decode default bitmap: " + e);
           return false;
@@ -190,6 +201,32 @@ public class SimpleVrPanoramaActivity extends Activity {
       }
 
       panoWidgetView.loadImageFromBitmap(BitmapFactory.decodeStream(istr), panoOptions);
+
+      //dat new new
+      if (fileInformation == null || fileInformation.length < 1
+              || fileInformation[0] == null || fileInformation[0].first == null) {
+        AssetManager assetManager = getAssets();
+        try {
+          istr = assetManager.open("pano_lincN00.png");
+          panoOptions2 = new Options();
+          panoOptions2.inputType = Options.TYPE_MONO;
+        } catch (IOException e) {
+          Log.e(TAG, "Could not decode default bitmap: " + e);
+          return false;
+        }
+      } else {
+        try {
+          istr = new FileInputStream(new File(fileInformation[0].first.getPath()));
+          panoOptions = fileInformation[0].second;
+        } catch (IOException e) {
+          Log.e(TAG, "Could not load file: " + e);
+          return false;
+        }
+      }
+
+      panoWidgetView2.loadImageFromBitmap(BitmapFactory.decodeStream(istr), panoOptions);
+
+      //les wrap it up!!!
       try {
         istr.close();
       } catch (IOException e) {
