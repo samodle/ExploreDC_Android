@@ -27,8 +27,12 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.vr.sdk.widgets.common.VrWidgetView;
 import com.google.vr.sdk.widgets.pano.VrPanoramaEventListener;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView.Options;
@@ -36,6 +40,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.widget.NumberPicker;
 
 import org.w3c.dom.Text;
@@ -70,6 +77,47 @@ public class SimpleVrPanoramaActivity extends Activity {
 
   private TextView p1;
   private int SecondsPerPano = 3;
+  private Button myButton;
+
+    /** Called when the user taps the Explore button */
+    public void startExploration(View view) {
+        myButton = findViewById(R.id.button);
+        myButton.setEnabled(false);
+
+        panoWidgetView.setDisplayMode(VrWidgetView.DisplayMode.FULLSCREEN_MONO);
+
+        Timer buttonTimer = new Timer();
+        buttonTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        Options panoOptions = null;  // It's safe to use null VrPanoramaView.Options.
+                        InputStream istr = null;
+
+                            AssetManager assetManager = getAssets();
+                            try {
+                                istr = assetManager.open("andes.jpg");
+                                panoOptions = new Options();
+                                panoOptions.inputType = Options.TYPE_MONO;
+                            } catch (IOException e) {
+                                Log.e(TAG, "Could not decode default bitmap: " + e);
+                                return;
+                            }
+
+
+                        panoWidgetView.loadImageFromBitmap(BitmapFactory.decodeStream(istr), panoOptions);
+                        myButton.setEnabled(true);
+                    }
+                });
+            }
+        }, 4000);
+    }
+
   /**
    * Called when the app is launched via the app icon or an intent using the adb command above. This
    * initializes the app and loads the image to render.
@@ -102,6 +150,8 @@ public class SimpleVrPanoramaActivity extends Activity {
       np.setMinValue(2);
       //Specify the maximum value/number of NumberPicker
       np.setMaxValue(10);
+
+      np.setValue(3);
 
       //Set a value change listener for NumberPicker
       np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -289,5 +339,17 @@ public class SimpleVrPanoramaActivity extends Activity {
           .show();
       Log.e(TAG, "Error loading pano: " + errorMessage);
     }
+
+      @Override
+      public void onDisplayModeChanged(int newDisplayMode) {
+          super.onDisplayModeChanged(newDisplayMode);
+          if (newDisplayMode == VrWidgetView.DisplayMode.EMBEDDED) {
+              // SimpleVrPanoramaActivity.this.finish();
+              SecondsPerPano++;
+              p1.setText("Beep: " + SecondsPerPano);
+          }
+      }
+
+
   }
 }
