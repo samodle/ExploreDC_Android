@@ -77,12 +77,15 @@ public class SimpleVrPanoramaActivity extends Activity {
 
   private TextView p1;
   private int SecondsPerPano = 3;
+  private int MSPerPano = 3000;
   private Button myButton;
 
     /** Called when the user taps the Explore button */
     public void startExploration(View view) {
         myButton = findViewById(R.id.button);
-        myButton.setEnabled(false);
+        myButton.setEnabled(false); //don't let em click dat button again
+
+        MSPerPano = SecondsPerPano * 1000; //duh
 
         panoWidgetView.setDisplayMode(VrWidgetView.DisplayMode.FULLSCREEN_MONO);
 
@@ -115,7 +118,7 @@ public class SimpleVrPanoramaActivity extends Activity {
                     }
                 });
             }
-        }, 4000);
+        }, MSPerPano);
     }
 
   /**
@@ -343,10 +346,46 @@ public class SimpleVrPanoramaActivity extends Activity {
       @Override
       public void onDisplayModeChanged(int newDisplayMode) {
           super.onDisplayModeChanged(newDisplayMode);
-          if (newDisplayMode == VrWidgetView.DisplayMode.EMBEDDED) {
-              // SimpleVrPanoramaActivity.this.finish();
-              SecondsPerPano++;
-              p1.setText("Beep: " + SecondsPerPano);
+          if (newDisplayMode == VrWidgetView.DisplayMode.FULLSCREEN_MONO) {
+              // SimpleVrPanoramaActivity.this.finish(); //this was original github code to return to force return to previous screen. haven't tested it yet.
+
+            //testing 1..2..mic check mic check...
+             // SecondsPerPano++;
+             // p1.setText("Beep: " + SecondsPerPano);
+
+              Timer buttonTimer = new Timer();
+              buttonTimer.schedule(new TimerTask() {
+
+                  @Override
+                  public void run() {
+                      runOnUiThread(new Runnable() {
+
+                          @Override
+                          public void run() {
+
+                              Options panoOptions = null;  // It's safe to use null VrPanoramaView.Options.
+                              InputStream istr = null;
+
+                              AssetManager assetManager = getAssets();
+                              try {
+                                  istr = assetManager.open("andes.jpg");
+                                  panoOptions = new Options();
+                                  panoOptions.inputType = Options.TYPE_MONO;
+                              } catch (IOException e) {
+                                  Log.e(TAG, "Could not decode default bitmap: " + e);
+                                  return;
+                              }
+
+                              panoWidgetView.loadImageFromBitmap(BitmapFactory.decodeStream(istr), panoOptions);
+
+                          }
+                      });
+                  }
+              }, MSPerPano);
+
+
+
+
           }
       }
 
