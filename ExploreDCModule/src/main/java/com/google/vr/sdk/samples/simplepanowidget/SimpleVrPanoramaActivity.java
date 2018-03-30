@@ -104,7 +104,7 @@ public class SimpleVrPanoramaActivity extends Activity {
 
                             AssetManager assetManager = getAssets();
                             try {
-                                istr = assetManager.open("andes.jpg");
+                                istr = assetManager.open("pano_marchwomen18_00.png");
                                 panoOptions = new Options();
                                 panoOptions.inputType = Options.TYPE_MONO;
                             } catch (IOException e) {
@@ -368,7 +368,7 @@ public class SimpleVrPanoramaActivity extends Activity {
 
                               AssetManager assetManager = getAssets();
                               try {
-                                  istr = assetManager.open("andes.jpg");
+                                  istr = assetManager.open("pano_marchwomen18_01.png");
                                   panoOptions = new Options();
                                   panoOptions.inputType = Options.TYPE_MONO;
                               } catch (IOException e) {
