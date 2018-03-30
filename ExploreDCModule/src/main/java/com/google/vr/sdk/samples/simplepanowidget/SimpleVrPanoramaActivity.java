@@ -43,6 +43,8 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+import com.amazonaws.mobile.client.AWSMobileClient;
 import android.widget.NumberPicker;
 
 import org.w3c.dom.Text;
@@ -104,7 +106,7 @@ public class SimpleVrPanoramaActivity extends Activity {
 
                             AssetManager assetManager = getAssets();
                             try {
-                                istr = assetManager.open("pano_marchwomen18_00.png");
+                                istr = assetManager.open("pano_marchforourlives18_00.png");
                                 panoOptions = new Options();
                                 panoOptions.inputType = Options.TYPE_MONO;
                             } catch (IOException e) {
@@ -129,6 +131,8 @@ public class SimpleVrPanoramaActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main_layout);
+
+      AWSMobileClient.getInstance().initialize(this).execute();
 
     // Make the source link clickable.
     TextView sourceText = (TextView) findViewById(R.id.source);
