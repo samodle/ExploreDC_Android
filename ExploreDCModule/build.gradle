@@ -39,5 +39,7 @@ model {
 dependencies {
     compile 'com.google.vr:sdk-panowidget:1.130.0'
     compile ('com.amazonaws:aws-android-sdk-mobile-client:2.6.+@aar') { transitive = true; }
+    compile 'com.amazonaws:aws-android-sdk-s3:2.6.+'
+    compile 'com.amazonaws:aws-android-sdk-cognito:2.6.+'
 
 }
