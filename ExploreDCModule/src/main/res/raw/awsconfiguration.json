@@ -3,8 +3,8 @@
     "CredentialsProvider": {
         "CognitoIdentity": {
             "Default": {
-                "PoolId": "7b4c2999-f086-42a9-b265-4cce7518573c",
-                "Region": "US_EAST_1"
+                "PoolId": "us-east-2:3a1cc2e2-cb0e-4846-b0d1-669375409936",
+                "Region": "us-east-2"
             }
         }
     },
@@ -16,7 +16,7 @@
     "S3TransferUtility": {
         "Default": {
             "Bucket": "exploredc",
-            "Region": "US East (Ohio)"
+            "Region": "us-east-2"
         }
     }
 }

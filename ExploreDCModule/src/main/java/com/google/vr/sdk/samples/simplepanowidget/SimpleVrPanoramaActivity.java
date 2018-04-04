@@ -32,11 +32,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.mobile.client.AWSStartupHandler;
 import com.google.vr.sdk.widgets.common.VrWidgetView;
 import com.google.vr.sdk.widgets.pano.VrPanoramaEventListener;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView.Options;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,16 +44,14 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobile.config.AWSConfiguration;
-import com.amazonaws.mobileconnectors.s3.transferutility.*;
-
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.services.s3.AmazonS3Client;
+
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferType;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 
 import android.widget.NumberPicker;
 
@@ -70,7 +68,7 @@ import org.w3c.dom.Text;
  * VrPanoramaView.Options.inputType.
  */
 public class SimpleVrPanoramaActivity extends Activity {
-
+/*
     public void dowloadData() {
         AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
             @Override
@@ -80,7 +78,7 @@ public class SimpleVrPanoramaActivity extends Activity {
         }).execute();
     }
 
-
+*/
     public void downloadWithTransferUtility() {
 
         TransferUtility transferUtility =
