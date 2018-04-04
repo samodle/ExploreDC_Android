@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -45,43 +46,46 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.amazonaws.mobile.config.AWSConfiguration;
+//import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.services.s3.AmazonS3Client;
+//import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.s3.transferutility.*;
 import com.amazonaws.mobile.client.AWSMobileClient;
 
 /**
  * A basic PanoWidget Activity to load panorama images from disk. It will load a test image by
- * default. It can also load an arbitrary image from disk using:
- *   adb shell am start -a "android.intent.action.VIEW" \
- *     -n "com.google.vr.sdk.samples.simplepanowidget/.SimpleVrPanoramaActivity" \
- *     -d "/sdcard/FILENAME.JPG"
- *
- * To load stereo images, "--ei inputType 2" can be used to pass in an integer extra which will set
- * VrPanoramaView.Options.inputType.
- */
-public class SimpleVrPanoramaActivity extends Activity {
-
-  private static final String TAG = SimpleVrPanoramaActivity.class.getSimpleName();
-  /** Actual panorama widget. **/
-  private VrPanoramaView panoWidgetView;
-  private VrPanoramaView panoWidgetView2;
-  /**
-   * Arbitrary variable to track load status. In this example, this variable should only be accessed
-   * on the UI thread. In a real app, this variable would be code that performs some UI actions when
-   * the panorama is fully loaded.
+   * default. It can also load an arbitrary image from disk using:
+   *   adb shell am start -a "android.intent.action.VIEW" \
+   *     -n "com.google.vr.sdk.samples.simplepanowidget/.SimpleVrPanoramaActivity" \
+   *     -d "/sdcard/FILENAME.JPG"
+   *
+   * To load stereo images, "--ei inputType 2" can be used to pass in an integer extra which will set
+   * VrPanoramaView.Options.inputType.
    */
-  public boolean loadImageSuccessful;
-  /** Tracks the file to be loaded across the lifetime of this app. **/
-  private Uri fileUri;
-  /** Configuration information for the panorama. **/
+  public class SimpleVrPanoramaActivity extends Activity {
+      private static final String TAG = SimpleVrPanoramaActivity.class.getSimpleName();
+      /** Actual panorama widget. **/
+      private VrPanoramaView panoWidgetView;
+      private VrPanoramaView panoWidgetView2;
+      /**
+       * Arbitrary variable to track load status. In this example, this variable should only be accessed
+       * on the UI thread. In a real app, this variable would be code that performs some UI actions when
+       * the panorama is fully loaded.
+       */
+      public boolean loadImageSuccessful;
+      /** Tracks the file to be loaded across the lifetime of this app. **/
+      private Uri fileUri;
+      /** Configuration information for the panorama. **/
   private Options panoOptions = new Options();
- // private Options panoOptions2 = new Options();
   private ImageLoaderTask backgroundImageLoaderTask;
 
   private TextView p1;
   private int SecondsPerPano = 3;
   private int MSPerPano = 3000;
   private Button myButton;
+
+  private String fileLocPrefix;
+  private static final String TEST_IMAGE = "pano_namN00.png";
 
     /** Called when the user taps the Explore button */
     public void startExploration(View view) {
@@ -107,11 +111,12 @@ public class SimpleVrPanoramaActivity extends Activity {
 
                             AssetManager assetManager = getAssets();
                             try {
-                                istr = assetManager.open("pano_marchforourlives18_00.png");
+                                 istr = assetManager.open(fileLocPrefix + "/" + TEST_IMAGE);
+                               // istr = assetManager.open("pano_marchforourlives18_00.png");
                                 panoOptions = new Options();
                                 panoOptions.inputType = Options.TYPE_MONO;
                             } catch (IOException e) {
-                                Log.e(TAG, "Could not decode default bitmap: " + e);
+                                Log.e(TAG, "GODDAMN IT VAKAITIS!!!!  Could not decode default bitmap: " + e);
                                 return;
                             }
 
@@ -132,6 +137,8 @@ public class SimpleVrPanoramaActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main_layout);
+
+    fileLocPrefix = Environment.getExternalStorageDirectory().toString();
 
     //yo dawg i copied this code str8 from https://docs.aws.amazon.com/aws-mobile/latest/developerguide/how-to-integrate-an-existing-bucket.html
     AWSMobileClient.getInstance().initialize(this).execute();
@@ -159,7 +166,6 @@ public class SimpleVrPanoramaActivity extends Activity {
       np.setMinValue(2);
       //Specify the maximum value/number of NumberPicker
       np.setMaxValue(10);
-
       np.setValue(3);
 
       //Set a value change listener for NumberPicker
@@ -175,7 +181,66 @@ public class SimpleVrPanoramaActivity extends Activity {
 
     // Initial launch of the app or an Activity recreation due to rotation.
     handleIntent(getIntent());
+
+
+
+    //whelp..
+      downloadWithTransferUtility();
   }
+
+    public void downloadWithTransferUtility() {
+
+        TransferUtility transferUtility =
+                TransferUtility.builder()
+                        .context(getApplicationContext())
+                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider()))
+                        .build();
+
+        TransferObserver downloadObserver =
+                transferUtility.download(
+                        "exploredc/" + TEST_IMAGE,
+                        new File(fileLocPrefix + "/" + TEST_IMAGE)); //    new File("/path/to/file/pano_lincN00.png"));
+        Log.d(TAG, "CORN DOGS FOR ALL THESE PEOPLE JACKIE: " + fileLocPrefix + "/" + TEST_IMAGE);
+        // Attach a listener to the observer to get notified of the
+        // updates in the state and the progress
+        downloadObserver.setTransferListener(new TransferListener() {
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (TransferState.COMPLETED == state) {
+                    // Handle a completed upload.
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                float percentDonef = ((float)bytesCurrent/(float)bytesTotal) * 100;
+                int percentDone = (int)percentDonef;
+
+                Log.d("MainActivity", "   ID:" + id + "   bytesCurrent: " + bytesCurrent + "   bytesTotal: " + bytesTotal + " " + percentDone + "%");
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                // Handle errors
+                Log.e(TAG, "well shit"  + ex.getMessage());
+            }
+
+        });
+
+        // If you do not want to attach a listener and poll for the data
+        // from the observer, you can check for the state and the progress
+        // in the observer.
+        if (TransferState.COMPLETED == downloadObserver.getState()) {
+            // Handle a completed upload.
+        }
+
+        Log.d("YourActivity", "Bytes Transferrred: " + downloadObserver.getBytesTransferred());
+        Log.d("YourActivity", "Bytes Total: " + downloadObserver.getBytesTotal());
+    }
+
+
 
   /**
    * Called when the Activity is already running and it's given a new intent.
