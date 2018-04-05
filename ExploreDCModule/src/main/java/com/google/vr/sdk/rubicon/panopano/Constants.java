@@ -1,4 +1,4 @@
-package com.google.vr.sdk.samples.simplepanowidget;
+package com.google.vr.sdk.rubicon.panopano;
 
 public class Constants {
 
