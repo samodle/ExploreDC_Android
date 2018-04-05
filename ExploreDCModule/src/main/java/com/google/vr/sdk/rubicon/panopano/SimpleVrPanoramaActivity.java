@@ -3,6 +3,7 @@ package com.google.vr.sdk.rubicon.panopano;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -71,6 +72,8 @@ import com.amazonaws.mobile.client.AWSMobileClient;
   private String fileLocPrefix;
   private static final String TEST_KEY = "pano_namN00.png";
 
+  private boolean TriggerChangesOnFullScreenPano = false;
+
     /** Called when the user taps the Explore button */
     public void startExploration(View view) {
         myButton = findViewById(R.id.button);
@@ -89,23 +92,20 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 
                     @Override
                     public void run() {
-
-                        Options panoOptions = null;  // It's safe to use null VrPanoramaView.Options.
-                        InputStream istr = null;
-
+                        
+                        Bitmap b;
                             AssetManager assetManager = getAssets();
                             try {
-                                 istr = assetManager.open(fileLocPrefix + "/" + TEST_KEY);
-                               // istr = assetManager.open("pano_marchforourlives18_00.png");
-                                panoOptions = new Options();
-                                panoOptions.inputType = Options.TYPE_MONO;
-                            } catch (IOException e) {
-                                Log.e(TAG, "GODDAMN IT VAKAITIS!!!!  Could not decode default bitmap: " + e);
+                                 b = BitmapFactory.decodeFile(fileLocPrefix + "/" + TEST_KEY);
+                            } catch (Exception e) { //orig:   } catch (IOException e) {
+                                Log.e(TAG, "GODDAMN IT VAKAITIS!!!! " + e);
                                 return;
                             }
 
-
-                        panoWidgetView.loadImageFromBitmap(BitmapFactory.decodeStream(istr), panoOptions);
+                        Options panoOptions  = new Options();
+                        panoOptions.inputType = Options.TYPE_MONO;
+                     //   panoWidgetView.loadImageFromBitmap(BitmapFactory.decodeStream(istr), panoOptions);
+                        panoWidgetView.loadImageFromBitmap(b, panoOptions);
                         myButton.setEnabled(true);
                     }
                 });
@@ -185,7 +185,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
                 transferUtility.download(
                         kkey,
                         new File(fileLocPrefix + "/" + kkey));
-        Log.d(TAG, "CORN DOGS FOR ALL THESE PEOPLE JACKIE: " + fileLocPrefix + "/" + kkey);
+       // Log.d(TAG, "CORN DOGS FOR ALL THESE PEOPLE JACKIE: " + fileLocPrefix + "/" + kkey);
         // Attach a listener to the observer to get notified of the
         // updates in the state and the progress
         downloadObserver.setTransferListener(new TransferListener() {
@@ -194,7 +194,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
             public void onStateChanged(int id, TransferState state) {
                 if (TransferState.COMPLETED == state) {
                     // Handle a completed upload.
-                    Log.d(TAG, "FOURTH PLACE");
+                    Log.d(TAG, "FOURTH PLACE" + fileLocPrefix + "/" + TEST_KEY);
                 }
             }
 
@@ -224,8 +224,6 @@ import com.amazonaws.mobile.client.AWSMobileClient;
         Log.d("YourActivity", "Bytes Transferrred: " + downloadObserver.getBytesTransferred());
         Log.d("YourActivity", "Bytes Total: " + downloadObserver.getBytesTotal());
     }
-
-
 
   /**
    * Called when the Activity is already running and it's given a new intent.
@@ -277,6 +275,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
   @Override
   protected void onPause() {
     panoWidgetView.pauseRendering();
+    panoWidgetView2.pauseRendering();
     super.onPause();
   }
 
@@ -284,12 +283,14 @@ import com.amazonaws.mobile.client.AWSMobileClient;
   protected void onResume() {
     super.onResume();
     panoWidgetView.resumeRendering();
+    panoWidgetView2.resumeRendering();
   }
 
   @Override
   protected void onDestroy() {
     // Destroy the widget and free memory.
     panoWidgetView.shutdown();
+    panoWidgetView2.shutdown();
 
     // The background task has a 5 second timeout so it can potentially stay alive for 5 seconds
     // after the activity is destroyed unless it is explicitly cancelled.
@@ -402,7 +403,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
       @Override
       public void onDisplayModeChanged(int newDisplayMode) {
           super.onDisplayModeChanged(newDisplayMode);
-          if (newDisplayMode == VrWidgetView.DisplayMode.FULLSCREEN_MONO) {
+          if (newDisplayMode == VrWidgetView.DisplayMode.FULLSCREEN_MONO && TriggerChangesOnFullScreenPano) {
               // SimpleVrPanoramaActivity.this.finish(); //this was original github code to return to force return to previous screen. haven't tested it yet.
 
             //testing 1..2..mic check mic check...
@@ -431,17 +432,11 @@ import com.amazonaws.mobile.client.AWSMobileClient;
                                   Log.e(TAG, "Could not decode default bitmap: " + e);
                                   return;
                               }
-
                               panoWidgetView.loadImageFromBitmap(BitmapFactory.decodeStream(istr), panoOptions);
-
                           }
                       });
                   }
               }, MSPerPano);
-
-
-
-
           }
       }
 
