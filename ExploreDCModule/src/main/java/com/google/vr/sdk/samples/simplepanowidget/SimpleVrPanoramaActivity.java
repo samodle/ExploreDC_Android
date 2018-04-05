@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.NumberPicker;
 
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.google.vr.sdk.widgets.common.VrWidgetView;
 import com.google.vr.sdk.widgets.pano.VrPanoramaEventListener;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
@@ -210,6 +211,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
             public void onStateChanged(int id, TransferState state) {
                 if (TransferState.COMPLETED == state) {
                     // Handle a completed upload.
+                    Log.d(TAG, "FOURTH PLACE");
                 }
             }
 
@@ -224,7 +226,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
             @Override
             public void onError(int id, Exception ex) {
                 // Handle errors
-                Log.e(TAG, "well shit"  + ex.getMessage());
+                Log.e(TAG, "well shit -> "  + ex.getMessage());
             }
 
         });
