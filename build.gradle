@@ -44,11 +44,3 @@ task extractGvrSo(type: Copy) {
     include "jni/**/libgvr.so"
 }
 
-task extractNdk { }
-extractNdk.dependsOn extractAudioSo
-extractNdk.dependsOn extractGvrSo
-
-task deleteNdk(type: Delete) {
-    delete "${project.rootDir}/libraries/jni"
-}
-clean.dependsOn(deleteNdk)
