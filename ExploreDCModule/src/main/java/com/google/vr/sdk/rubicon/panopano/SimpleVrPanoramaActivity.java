@@ -69,7 +69,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
   private Button myButton;
 
   private String fileLocPrefix;
-  private static final String TEST_IMAGE = "pano_namN00.png";
+  private static final String TEST_KEY = "pano_namN00.png";
 
     /** Called when the user taps the Explore button */
     public void startExploration(View view) {
@@ -95,7 +95,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 
                             AssetManager assetManager = getAssets();
                             try {
-                                 istr = assetManager.open(fileLocPrefix + "/" + TEST_IMAGE);
+                                 istr = assetManager.open(fileLocPrefix + "/" + TEST_KEY);
                                // istr = assetManager.open("pano_marchforourlives18_00.png");
                                 panoOptions = new Options();
                                 panoOptions.inputType = Options.TYPE_MONO;
@@ -169,10 +169,10 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 
 
     //whelp..
-      downloadWithTransferUtility();
+      downloadWithTransferUtility(TEST_KEY);
   }
 
-    public void downloadWithTransferUtility() {
+    public void downloadWithTransferUtility(String kkey) {
 
         TransferUtility transferUtility =
                 TransferUtility.builder()
@@ -183,9 +183,9 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 
         TransferObserver downloadObserver =
                 transferUtility.download(
-                        "exploredc/" + TEST_IMAGE,
-                        new File(fileLocPrefix + "/" + TEST_IMAGE)); //    new File("/path/to/file/pano_lincN00.png"));
-        Log.d(TAG, "CORN DOGS FOR ALL THESE PEOPLE JACKIE: " + fileLocPrefix + "/" + TEST_IMAGE);
+                        kkey,
+                        new File(fileLocPrefix + "/" + kkey));
+        Log.d(TAG, "CORN DOGS FOR ALL THESE PEOPLE JACKIE: " + fileLocPrefix + "/" + kkey);
         // Attach a listener to the observer to get notified of the
         // updates in the state and the progress
         downloadObserver.setTransferListener(new TransferListener() {
