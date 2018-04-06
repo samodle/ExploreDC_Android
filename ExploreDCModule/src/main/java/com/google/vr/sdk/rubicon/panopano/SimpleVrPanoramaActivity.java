@@ -92,7 +92,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 
                     @Override
                     public void run() {
-                        
+
                         Bitmap b;
                             AssetManager assetManager = getAssets();
                             try {
