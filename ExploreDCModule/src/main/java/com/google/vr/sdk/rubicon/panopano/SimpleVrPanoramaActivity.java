@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -72,7 +73,25 @@ import com.amazonaws.mobile.client.AWSMobileClient;
   private String fileLocPrefix;
   private static final String TEST_KEY = "pano_namN00.png";
 
+    Handler handler = new Handler();
+    int handlerDelay = 1000; //milliseconds
+    private float lastPitch = 0;
+    private float lastYaw = 0;
+
+
+
+
   private boolean TriggerChangesOnFullScreenPano = false;
+
+  public void CheckHeadPosish(){
+      float[] fVector = {0,0};
+      panoWidgetView.getHeadRotation(fVector);
+      lastPitch = fVector[0];
+      lastYaw = fVector[1];
+      Log.d(TAG, "Pitch: " + lastPitch + "   Yaw: " + lastYaw);
+
+  }
+
 
     /** Called when the user taps the Explore button */
     public void startExploration(View view) {
@@ -403,12 +422,31 @@ import com.amazonaws.mobile.client.AWSMobileClient;
       @Override
       public void onDisplayModeChanged(int newDisplayMode) {
           super.onDisplayModeChanged(newDisplayMode);
+
+
+          //this is for the check pitch/yaw every so often
+          handler.postDelayed(new Runnable(){
+              public void run(){
+                  //do something
+                  CheckHeadPosish();
+                  handler.postDelayed(this, handlerDelay);
+              }
+          }, handlerDelay);
+
+
+
+
           if (newDisplayMode == VrWidgetView.DisplayMode.FULLSCREEN_MONO && TriggerChangesOnFullScreenPano) {
               // SimpleVrPanoramaActivity.this.finish(); //this was original github code to return to force return to previous screen. haven't tested it yet.
 
             //testing 1..2..mic check mic check...
              // SecondsPerPano++;
              // p1.setText("Beep: " + SecondsPerPano);
+
+
+
+
+
 
               Timer buttonTimer = new Timer();
               buttonTimer.schedule(new TimerTask() {
@@ -439,9 +477,6 @@ import com.amazonaws.mobile.client.AWSMobileClient;
               }, MSPerPano);
           }
       }
-
-
-
 
 
   }
